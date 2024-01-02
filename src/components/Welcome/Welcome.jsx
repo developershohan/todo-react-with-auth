@@ -1,9 +1,12 @@
-import React from 'react'
+// import Login from "../Login/Login";
+import Register from "../Register/Register";
 
-const Welcome = () => {
+
+export default function Welcome() {
   return (
-    <div>Welcome</div>
+    <>
+
+     <Register/>
+    </>
   )
 }
-
-export default Welcome
