@@ -1,11 +1,13 @@
-import Welcome from "./components/Welcome/Welcome"
+
 import "./App.css"
+import { RouterProvider } from 'react-router-dom'
+import router from "./Router/Router"
+
 
 const App = () => {
   return (
     <div>
-      
-      <Welcome/>
+         <RouterProvider router={router} />
     </div>
   )
 }
