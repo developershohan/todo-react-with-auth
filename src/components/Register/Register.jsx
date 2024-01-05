@@ -1,6 +1,29 @@
+import { createUserWithEmailAndPassword } from "firebase/auth"
+
+import { auth } from "../../firebase.js"
+import { useNavigate,Link } from "react-router-dom"
+import UserContext from "../../context/UserContext.js"
+import { useContext } from "react"
 
 
 const Register = () => {
+    const navigate = useNavigate()
+
+const {input, setInput} = useContext(UserContext)
+    const handleInputChange = (e) => {
+        setInput((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value
+        }))
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        createUserWithEmailAndPassword(auth, input.email, input.password).then(() => {
+            navigate("/login")
+        }).catch(err=> console.log(err.massage))
+
+    }
+
     return (
         <div>
 
@@ -12,7 +35,7 @@ const Register = () => {
                         </h2>
                     </div>
                     <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
-                        <form className="space-y-3" action="#" method="POST">
+                        <form className="space-y-3" onClick={handleSubmit} method="POST">
                             <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                                 <input
                                     type="text"
@@ -21,6 +44,8 @@ const Register = () => {
                                     autoComplete="username"
                                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                                     placeholder="Username"
+                                    onChange={handleInputChange}
+                                    value={input.username}
                                 />
                             </div>
                             <div>
@@ -32,6 +57,8 @@ const Register = () => {
                                     placeholder='Email Address'
                                     required
                                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    onChange={handleInputChange}
+                                    value={input.email}
                                 />
                             </div>
                             <div className="mt-2">
@@ -43,6 +70,8 @@ const Register = () => {
                                     placeholder='Password'
                                     required
                                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    onChange={handleInputChange}
+                                    value={input.password}
                                 />
                             </div>
                             <div>
@@ -56,15 +85,15 @@ const Register = () => {
                         </form>
                         <p className="mt-10 text-center text-sm text-gray-500">
                             Already have an Account?{' '}
-                            <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                            <Link to="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                                 Login
-                            </a>
+                            </Link>
                         </p>
                     </div>
                 </div>
-            </div>
+            </div >
 
-        </div>
+        </div >
     )
 }
 
