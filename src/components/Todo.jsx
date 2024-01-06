@@ -1,5 +1,7 @@
 
+import { ref, remove } from "firebase/database";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { auth, db } from "../firebase";
 
 const style = {
   li: `flex align-middle justify-between text-center w-full  p-3 bg-slate-200 `,
@@ -10,6 +12,11 @@ const style = {
 
 
 const Todo = ({todo}) => {
+
+  const handleDelete = (uid) => {
+    remove(ref(db, `todos/${auth.currentUser.uid}/${uid}`));
+  }
+
   return (
     <div>
         
@@ -18,7 +25,7 @@ const Todo = ({todo}) => {
                 <input  className=' cursor-pointer size-4' type="checkbox" />
                 <p className={style.text}>{todo.todo}</p>
             </div>
-            <button className=' p-0 bg-transparent text-black text-xl border-0 focus:outline-0'> <FaRegTrashAlt/> </button>
+            <button onClick={ ()=> handleDelete(todo.uid)} className=' p-0 bg-transparent text-black text-xl border-0 focus:outline-0'> <FaRegTrashAlt/> </button>
         </li>
        
     </div>
