@@ -49,7 +49,7 @@ const TodoPage = () => {
                 placeholder='Add todo'
                 className='w-full p-3 bg-transparent text-black border border-black'
               />
-              <button type="submit">Add</button>
+              <button className=" text-black border border-black" type="submit">Add</button>
             </form>
           </div>
         </div>
