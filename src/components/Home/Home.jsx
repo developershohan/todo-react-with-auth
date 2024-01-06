@@ -1,31 +1,42 @@
 import { onAuthStateChanged, signOut } from 'firebase/auth'
-import  { useContext, useEffect } from 'react'
+import  { useContext, useEffect, useState } from 'react'
 import { auth } from '../../firebase.js'
 import { useNavigate } from "react-router-dom"
 import UserContext from '../../context/UserContext.js'
+import TodoPage from '../TodoPage/TodoPage.jsx'
 
 
 const Home = () => {
-  const navigate = useNavigate()
-  const {input} = useContext(UserContext)
+  const navigate = useNavigate();
+  const { input, setInput } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    auth.onAuthStateChanged((user)=>{
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        navigate("/login")
+        navigate('/login');
+      } else {
+        setInput((prevInput) => ({ ...prevInput, username: user.displayName  }));
       }
-    })
+      setLoading(false);
+    });
   
-  }, [])
+    return () => unsubscribe();
+  }, [navigate, setInput]);
   
 
-  const handleLogout = ()=>{
-    signOut(auth).then(()=>{
-      navigate("/login")
-    }).catch(err => {err.message})
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      navigate('/login');
+    });
+  };
+
+  if (loading) {
+    // You might want to show a loading indicator while waiting for authentication state
+    return <div>Loading...</div>;
   }
-
   return (
     <div>Home
+      <TodoPage/>
       <h1 className=' text-cyan-50 '>{input.username}</h1>
     <button onClick={handleLogout}>Log Out</button>
 

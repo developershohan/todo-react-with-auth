@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 
 import { auth } from "../../firebase.js"
 import { useNavigate, Link } from "react-router-dom"
@@ -8,6 +8,7 @@ import { useContext } from "react"
 
 const Register = () => {
     const navigate = useNavigate()
+    
 
     const { input, setInput } = useContext(UserContext)
     const handleInputChange = (e) => {
@@ -16,13 +17,22 @@ const Register = () => {
             [e.target.name]: e.target.value
         }))
     }
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        createUserWithEmailAndPassword(auth, input.email, input.password).then(() => {
-            navigate("/login")
-        }).catch(err => console.log(err.massage))
-
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+      
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, input.email, input.password);
+      
+          // Set the display name after user registration
+          await updateProfile(userCredential.user, {
+            displayName: input.username,
+          });
+      
+          navigate('/login');
+        } catch (error) {
+          console.log(error.message);
+        }
+      };
 
     return (
         <div>
