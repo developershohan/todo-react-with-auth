@@ -1,74 +1,73 @@
-import { ref, set } from "firebase/database"
-import { useState } from "react"
-import { uid } from "uid"
-import { auth, db } from "../../firebase"
-
+import { ref, set, onValue } from "firebase/database";
+import { useState, useEffect } from "react";
+import { uid } from "uid";
+import { auth, db } from "../../firebase";
+import Todo from "../Todo";
 
 const TodoPage = () => {
+  const [todos, setTodos] = useState([]);
+  const [todo, setTodo] = useState("");
 
-  // const [input, setInput] = useState("")
-  const [todo, setTodo] = useState("")
+  // Fetch todos from Firebase
+  useEffect(() => {
+    const todosRef = ref(db, `todos/${auth.currentUser.uid}`);
+    onValue(todosRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data !== null) {
+        const todosArray = Object.values(data);
+        setTodos(todosArray);
+      } else {
+        setTodos([]);
+      }
+    });
+  }, []);
 
+  // Create todo
   const createTodo = (e) => {
-e.preventDefault()
-    const todoId = uid(); // Generate a unique ID for the todo
+    e.preventDefault();
+    const todoId = uid();
     set(ref(db, `todos/${auth.currentUser.uid}/${todoId}`), {
       todo,
       uid: todoId,
-    })
-    setTodo("")
-
-  }
-
-
-
-  // create todo
-
-
-
-
-  // get todo from firebase
-
-
-
-  // update todo
-
-
-  // delete todo
-
-
+    });
+    setTodo("");
+  };
 
   return (
     <>
       <div className="todo-wrapper">
-        <div className="todo-container bg-white p-7 border rounded-sm shadow-sm ">
+        <div className="todo-container bg-white p-7 border rounded-sm shadow-sm">
           <div className="todo-header mb-3">
-
             <h1 className="text-3xl text-black font-bold uppercase">Todo list pro</h1>
           </div>
-          <div className="todo-body ">
-            <form onSubmit={(e)=> createTodo(e) } className=' flex gap-2 '>
-              <input value={todo} onChange={(e => setTodo(e.target.value))} type="text" placeholder='Add todo' className=' w-full p-3 bg-transparent text-black border border-black' />
-              <button>Add</button>
+          <div className="todo-body">
+            <form onSubmit={(e) => createTodo(e)} className='flex gap-2'>
+              <input
+                value={todo}
+                onChange={(e) => setTodo(e.target.value)}
+                type="text"
+                placeholder='Add todo'
+                className='w-full p-3 bg-transparent text-black border border-black'
+              />
+              <button type="submit">Add</button>
             </form>
           </div>
-
         </div>
-        <div className="todo-container bg-white mt-3 p-7 border rounded-sm shadow-sm ">
+        <div className="todo-container bg-white mt-3 p-7 border rounded-sm shadow-sm">
           <div className="todo-header mb-3">
-            <ul className=' flex flex-col gap-2'>
-
+            <ul className='flex flex-col gap-2'>
+              {todos.map((todo) => (
+                <Todo key={todo.uid} todo={todo} />
+              ))}
             </ul>
           </div>
-
-
         </div>
         <div className="todo-count text-black mt-2">
-          <p> you have  todos</p>
+          <p>You have {todos.length} todos</p>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default TodoPage
+export default TodoPage;

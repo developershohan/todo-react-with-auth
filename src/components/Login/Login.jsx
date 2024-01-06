@@ -1,7 +1,7 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { useEffect, useState } from "react"
 import { auth } from "../../firebase.js"
-import { useNavigate,Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 
 const Login = () => {
@@ -15,7 +15,7 @@ const Login = () => {
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
             if (user) {
-                navigate("/home")
+                navigate("/")
             }
         })
 
@@ -36,7 +36,7 @@ const Login = () => {
 
         e.preventDefault()
         signInWithEmailAndPassword(auth, input.email, input.password).then(() => {
-            navigate("/home")
+            navigate("/")
         }).catch((error) => {
             console.log(error.message)
         });

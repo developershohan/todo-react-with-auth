@@ -9,16 +9,16 @@ const style = {
 }
 
 
-const Todo = ({todo, toggleComplete,deletetodo}) => {
+const Todo = ({todo}) => {
   return (
     <div>
         
-        <li className={ todo.completed ? style.liComplete : style.li }>
+        <li className={ style.li }>
             <div className="todo-list-container text-black flex items-center gap-3 cursor-pointer w-full">
-                <input onChange={()=>toggleComplete(todo)} className=' cursor-pointer size-4' type="checkbox" checked={todo.completed ? 'checked' : ''}/>
-                <p onClick={()=>toggleComplete(todo)} className={todo.completed ? style.textCompleted : style.text}>{todo.text}</p>
+                <input  className=' cursor-pointer size-4' type="checkbox" />
+                <p className={style.text}>{todo.todo}</p>
             </div>
-            <button onClick={()=>deletetodo(todo.id)} className=' p-0 bg-transparent text-black text-xl border-0 focus:outline-0'> <FaRegTrashAlt/> </button>
+            <button className=' p-0 bg-transparent text-black text-xl border-0 focus:outline-0'> <FaRegTrashAlt/> </button>
         </li>
        
     </div>
