@@ -2,6 +2,7 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { useEffect, useState } from "react"
 import { auth } from "../../firebase.js"
 import { useNavigate, Link } from "react-router-dom"
+import { createToast } from "../../helper/helpers.jsx"
 
 
 const Login = () => {
@@ -37,6 +38,7 @@ const Login = () => {
         e.preventDefault()
         signInWithEmailAndPassword(auth, input.email, input.password).then(() => {
             navigate("/")
+            createToast("Login successfull", "Success")
         }).catch((error) => {
             console.log(error.message)
         });

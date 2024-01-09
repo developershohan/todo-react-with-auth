@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { uid } from "uid";
 import { auth, db } from "../../firebase";
 import Todo from "../Todo";
+import { createToast } from "../../helper/helpers";
 
 const TodoPage = () => {
   const [todos, setTodos] = useState([]);
@@ -31,6 +32,8 @@ const TodoPage = () => {
       uid: todoId,
     });
     setTodo("");
+    createToast("Todo created successful", "success")
+
   };
 
   return (

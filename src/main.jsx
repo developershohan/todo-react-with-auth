@@ -4,6 +4,8 @@ import App from './App.jsx'
 import './index.css'
 // import { ThemeProvider } from "@material-tailwind/react";
 import UserProvider from './provider/UserProvider.jsx';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 

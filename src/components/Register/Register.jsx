@@ -29,6 +29,7 @@ const Register = () => {
           });
       
           navigate('/login');
+          setInput("")
         } catch (error) {
           console.log(error.message);
         }

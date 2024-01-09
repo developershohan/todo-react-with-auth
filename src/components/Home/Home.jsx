@@ -41,7 +41,7 @@ const Home = ({todos}) => {
   }
 
   return (
-    <div>Home
+    <div>
       <TodoPage todos={todos} />
       <h1 className=' text-cyan-50 '>{input.username}</h1>
       <button onClick={handleLogout}>Log Out</button>
