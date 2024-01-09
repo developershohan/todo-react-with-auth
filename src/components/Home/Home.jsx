@@ -4,6 +4,7 @@ import { auth } from '../../firebase.js'
 import { useNavigate } from "react-router-dom"
 import UserContext from '../../context/UserContext.js'
 import TodoPage from '../TodoPage/TodoPage.jsx'
+import { createToast } from '../../helper/helpers.jsx'
 
 
 
@@ -32,6 +33,8 @@ const Home = ({todos}) => {
   const handleLogout = () => {
     signOut(auth).then(() => {
       navigate('/login');
+      createToast("You are logged out", "success")
+
     });
   };
 
@@ -42,8 +45,8 @@ const Home = ({todos}) => {
 
   return (
     <div>
+      <h1 className=' text-black-50 text-xl	'>{`Hi, ${input.username}`}</h1>
       <TodoPage todos={todos} />
-      <h1 className=' text-cyan-50 '>{input.username}</h1>
       <button onClick={handleLogout}>Log Out</button>
 
     </div>

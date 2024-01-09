@@ -37,8 +37,8 @@ const Login = () => {
 
         e.preventDefault()
         signInWithEmailAndPassword(auth, input.email, input.password).then(() => {
+            createToast("Login successfull","success")
             navigate("/")
-            createToast("Login successfull", "Success")
         }).catch((error) => {
             console.log(error.message)
         });

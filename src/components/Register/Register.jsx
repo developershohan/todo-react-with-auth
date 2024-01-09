@@ -4,6 +4,7 @@ import { auth } from "../../firebase.js"
 import { useNavigate, Link } from "react-router-dom"
 import UserContext from "../../context/UserContext.js"
 import { useContext } from "react"
+import { createToast } from "../../helper/helpers.jsx"
 
 
 const Register = () => {
@@ -30,6 +31,8 @@ const Register = () => {
       
           navigate('/login');
           setInput("")
+          createToast("Registration Successfull", "success")
+
         } catch (error) {
           console.log(error.message);
         }
