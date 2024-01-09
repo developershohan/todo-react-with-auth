@@ -33,15 +33,25 @@ const Login = () => {
 
 
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
 
         e.preventDefault()
-        signInWithEmailAndPassword(auth, input.email, input.password).then(() => {
-            createToast("Login successfull","success")
-            navigate("/")
-        }).catch((error) => {
-            console.log(error.message)
-        });
+        try {
+            await signInWithEmailAndPassword(auth, input.email, input.password);
+            createToast("Login successful", "success");
+            navigate("/");
+        } catch (error) {
+            if (error.code === "auth/user-not-found") {
+                createToast("User not found. Please check your email.", "error");
+              } else if (error.code === "auth/wrong-password") {
+                createToast("Incorrect password. Please try again.", "error");
+              } else if (error.code === "auth/invalid-credential") {
+                createToast("Invalid credentials. Please check your email and password.", "error");
+              } else {
+                // Handle other errors
+                console.error(error.message);
+              }
+        }
 
     }
 
@@ -56,7 +66,7 @@ const Login = () => {
                         </h2>
                     </div>
                     <div className="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
-                        <form onClick={handleSubmit} className="space-y-3" method="POST">
+                        <form onSubmit={handleSubmit} className="space-y-3" method="POST">
                             <div>
                                 <div>
                                     <input
@@ -89,7 +99,7 @@ const Login = () => {
                             </div>
                             <div>
                                 <button
-                                    type="button"
+                                    type="submit"
                                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
                                     Sign in

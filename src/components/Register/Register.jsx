@@ -33,6 +33,7 @@ const Register = () => {
           setInput("")
           createToast("Registration Successfull", "success")
 
+
         } catch (error) {
           console.log(error.message);
         }
